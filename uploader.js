@@ -23,7 +23,7 @@ function handleFileSelect(evt) {
       reader.onload = (function(theFile) {
         return function(e) {
           // Render thumbnail.
-          var span = document.createElement('span');
+          var span = document.createElement('div');
           span.innerHTML = ['<img class="thumb" src="', e.target.result,
                             '" title="', escape(theFile.name), '"/>','<div class="name"></div>'].join('');
           document.getElementById('list').insertBefore(span, null);

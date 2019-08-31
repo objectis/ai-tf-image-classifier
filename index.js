@@ -8,7 +8,8 @@ async function app() {
   console.log('Sucessfully loaded model');
   //show button
   document.getElementById('loader').classList.add("hide");
-  document.getElementById('classify').classList.add("show").addEventListener('click', () => doClassify());
+  document.getElementById('classify').classList.add("show");
+  document.getElementById('classify').addEventListener('click', () => doClassify());
   
   async function singleclf(img){
 		const result =  await net.classify(img);
