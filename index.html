@@ -3,6 +3,7 @@
     <!-- Load the latest version of TensorFlow.js -->
     <script src="https://unpkg.com/@tensorflow/tfjs"></script>
     <script src="https://unpkg.com/@tensorflow-models/mobilenet"></script>
+    <script src="https://unpkg.com/@tensorflow-models/knn-classifier"></script>
   </head>
   <body>
   	<center>
@@ -10,6 +11,9 @@
     <!-- Add an image that we will use to test -->
     <video autoplay playsinline muted id="webcam" width="300" height="300"></video>
     <div style="color:darkgreen;font-size:80px; margin-top:20px" id="forsure"></div>
+    <button id="class-a">Add A</button>
+	<button id="class-b">Add B</button>
+	<button id="class-c">Add C</button>
     <!-- Load index.js after the content of the page -->
     <script src="index.js"></script>
   	</center>
