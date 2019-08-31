@@ -35,6 +35,12 @@ async function app() {
       prediction: ${result[0].className}\n
       probability: ${result[0].probability}
     `;
+    if(result[0].probability > 0.6){
+      document.getElementById('forsure').innerText = result[0].className;
+    }
+    else{
+      document.getElementById('forsure').innerText = '';
+    }
 
     // Give some breathing room by waiting for the next animation frame to
     // fire.
