@@ -4,18 +4,19 @@
     <script src="https://unpkg.com/@tensorflow/tfjs"></script>
     <script src="https://unpkg.com/@tensorflow-models/mobilenet"></script>
     <script src="https://unpkg.com/@tensorflow-models/knn-classifier"></script>
+    
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-  	<center>
-    <div id="console"></div>
-    <!-- Add an image that we will use to test -->
-    <video autoplay playsinline muted id="webcam" width="300" height="300"></video>
-    <div style="color:darkgreen;font-size:80px; margin-top:20px" id="forsure"></div>
-    <button id="class-a">Add A</button>
-	<button id="class-b">Add B</button>
-	<button id="class-c">Add C</button>
-    <!-- Load index.js after the content of the page -->
-    <script src="index.js"></script>
-  	</center>
+  	<div class="header">Multiple image classifier (no server required/plain JS)</div>
+  	<div class="content">
+		<input type="file" id="files" name="files[]" multiple />
+		<output id="list"></output>
+		<button type="button" id="classify">Classify!</button>
+		<div id="loader"></div>
+	</div>
+	
+	<script src="index.js"></script>
+    <script src="uploader.js"></script>
   </body>
 </html>

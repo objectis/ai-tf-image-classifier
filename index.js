@@ -1,25 +1,4 @@
-const classifier = knnClassifier.create();
-const webcamElement = document.getElementById('webcam');
 let net;
-
-async function setupWebcam() {
-  return new Promise((resolve, reject) => {
-    const navigatorAny = navigator;
-    navigator.getUserMedia = navigator.getUserMedia ||
-        navigatorAny.webkitGetUserMedia || navigatorAny.mozGetUserMedia ||
-        navigatorAny.msGetUserMedia;
-    if (navigator.getUserMedia) {
-      navigator.getUserMedia({video: true},
-        stream => {
-          webcamElement.srcObject = stream;
-          webcamElement.addEventListener('loadeddata',  () => resolve(), false);
-        },
-        error => reject());
-    } else {
-      reject();
-    }
-  });
-}
 
 async function app() {
   console.log('Loading mobilenet..');
@@ -27,41 +6,30 @@ async function app() {
   // Load the model.
   net = await mobilenet.load();
   console.log('Sucessfully loaded model');
-
-  await setupWebcam();
-
-  // Reads an image from the webcam and associates it with a specific class
-  // index.
-  const addExample = classId => {
-    // Get the intermediate activation of MobileNet 'conv_preds' and pass that
-    // to the KNN classifier.
-    const activation = net.infer(webcamElement, 'conv_preds');
-
-    // Pass the intermediate activation to the classifier.
-    classifier.addExample(activation, classId);
-  };
-
-  // When clicking a button, add an example for that class.
-  document.getElementById('class-a').addEventListener('click', () => addExample(0));
-  document.getElementById('class-b').addEventListener('click', () => addExample(1));
-  document.getElementById('class-c').addEventListener('click', () => addExample(2));
-
-  while (true) {
-    if (classifier.getNumClasses() > 0) {
-      // Get the activation from mobilenet from the webcam.
-      const activation = net.infer(webcamElement, 'conv_preds');
-      // Get the most likely class and confidences from the classifier module.
-      const result = await classifier.predictClass(activation);
-
-      const classes = ['A', 'B', 'C'];
-      document.getElementById('console').innerText = `
-        prediction: ${classes[result.classIndex]}\n
-        probability: ${result.confidences[result.classIndex]}
-      `;
-    }
-
-    await tf.nextFrame();
-  }
+  //show button
+  document.getElementById('loader').classList.add("hide");
+  document.getElementById('classify').classList.add("show").addEventListener('click', () => doClassify());
+  
+  async function singleclf(img){
+		const result =  await net.classify(img);
+		return result;
+	}
+	async function doClassify () {
+		const imgEl = document.getElementById('list').children;
+		const results = [];
+		for (const img of imgEl) {
+	    // Good: all asynchronous operations are immediately started.
+	    results.push(singleclf(img.querySelector('img.thumb')));
+	   }
+	   const classified = await Promise.all(results);
+	   classified.forEach(function(prediction,index){
+	      document.getElementById('list').children[index].querySelector('div.name').innerHTML=
+	      [prediction[0].className,'(~',Math.round(prediction[0].probability*100),'%)'].join('');
+	   })
+	   console.log(classified);
+	}
+	
+  
 }
 
 app();
